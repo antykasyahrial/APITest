@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
+Use File;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TransactionApiController extends Controller
 {
@@ -13,7 +17,9 @@ class TransactionApiController extends Controller
      */
     public function index()
     {
-        //
+        //see all transaction
+        $transaction = Transaction::all()->toJson(JSON_PRETTY_PRINT);
+        return response($transaction, 200);
     }
 
     /**
@@ -21,9 +27,11 @@ class TransactionApiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function join($id)
     {
-        //
+        $transaction = DB::table('transactions')->join('users', 'id_user', '=', 'users.id')
+                    ->select('users.username')->get();
+        return response($transaction, 200);
     }
 
     /**
@@ -34,7 +42,25 @@ class TransactionApiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //add transactions
+        $validateData = Validator::make($request->all(), [
+            'id_user'       => 'required',
+            'id_product'    => 'required',
+            'qty'           => 'required',
+            'totalPrice'    => 'required',
+        ]);
+        if ($validateData->fails()) {
+            return response($validateData->errors(), 400);
+        } else {
+            $transaction = new Transaction();
+            $transaction->id_user = $request->id_user;
+            $transaction->id_product = $request->id_product;
+            $transaction->qty = $request->qty;
+            $transaction->totalPrice = $request->totalPrice;
+            $transaction->save();
+            return response()->json([
+                "message" => "transaction added"], 201);
+        }
     }
 
     /**
@@ -45,7 +71,13 @@ class TransactionApiController extends Controller
      */
     public function show($id)
     {
-        //
+        //get transaction by id
+        if (Transaction::where('id', $id)->exists()){
+            $transaction = Transaction::find($id)->toJson(JSON_PRETTY_PRINT);
+            return response($transaction, 200);
+        } else {
+            return response()->json(["message" => "transaction not found"], 404);
+        }
     }
 
     /**
@@ -68,7 +100,26 @@ class TransactionApiController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //update data transaction
+        if (Transaction::where('id', $id)->exists()) {
+            $validateData = Validator::make($request->all(), [
+                'id_user'       => 'required',
+                'id_product'    => 'required',
+                'qty'           => 'required',
+                'totalPrice'    => 'required',
+            ]);
+            if ($validateData->fails()){
+                return response($validateData->errors(), 400);
+            } else {
+                $transaction = Transaction::find($id);
+                $transaction->name = $request->name;
+                $transaction->brand = $request->brand;
+                $transaction->qty = $request->qty;
+                $transaction->save();
+                return response()->json([
+                    "message" => "transaction updated"], 201);
+            } 
+        }
     }
 
     /**

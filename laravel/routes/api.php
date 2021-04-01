@@ -31,3 +31,8 @@ Route::post('/product', [ProductApiController::class, 'store']);
 Route::get('/product/{id}', [ProductApiController::class, 'show']);
 Route::put('/product/{id}', [ProductApiController::class, 'update']);
 
+Route::get('/transaction', [TransactionApiController::class, 'index']);
+Route::post('/transaction', [TransactionApiController::class, 'store']);
+Route::get('/transaction/{id}', [TransactionApiController::class, 'show']);
+Route::put('/transaction/{id}', [TransactionController::class, 'update']);
+
