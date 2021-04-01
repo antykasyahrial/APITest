@@ -2,6 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserApiController;
+use App\Http\Controllers\ProductApiController;
+use App\Http\Controllers\TransactionApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/alluser', function () {
-    return 'Hello World';
-});
+Route::get('/alluser', [UserApiController::class, 'index']);
+$router->post('/register', [UserApiController::class, 'store']);
+$router->get('/user/{id}', [UserApiController::class, 'show']);
+$router->put('/user/{id}', [UserApiController::class, 'update']);
