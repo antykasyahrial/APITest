@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserApiController;
 use App\Http\Controllers\ProductApiController;
 use App\Http\Controllers\TransactionApiController;
+use App\Http\Controllers\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,3 +37,11 @@ Route::post('/transaction', [TransactionApiController::class, 'store']);
 Route::get('/transaction/{id}', [TransactionApiController::class, 'show']);
 Route::put('/transaction/{id}', [TransactionController::class, 'update']);
 
+Route::post('/login', [LoginController::class, 'login']);
+
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'auth'
+], function ($router) {
+    Route::post('login', 'AuthController@login');
+});

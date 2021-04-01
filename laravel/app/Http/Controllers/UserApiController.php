@@ -7,7 +7,6 @@ Use File;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
-
 class UserApiController extends Controller
 {
     /**
