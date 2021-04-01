@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
+Use File;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ProductApiController extends Controller
@@ -13,7 +16,9 @@ class ProductApiController extends Controller
      */
     public function index()
     {
-        //
+        //see all products
+        $product = Product::all()->toJson(JSON_PRETTY_PRINT);
+        return response($product, 200);
     }
 
     /**
@@ -23,7 +28,7 @@ class ProductApiController extends Controller
      */
     public function create()
     {
-        //
+       
     }
 
     /**
@@ -34,7 +39,27 @@ class ProductApiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         //add product
+         $validateData = Validator::make($request->all(), [
+             'name'          => 'required|min:4|max:250',
+             'brand'         => 'required|min:4|max:250',
+             'qty'           => 'required',
+             'price'         => 'required',
+             'description'   => 'required'
+         ]);
+         if ($validateData->fails()) {
+             return response($validateData->errors(), 400);
+         } else {
+             $product = new Product();
+             $product->name = $request->name;
+             $product->brand = $request->brand;
+             $product->qty = $request->qty;
+             $product->price = $request->price;
+             $product->description = $request->description;
+             $product->save();
+             return response()->json([
+                 "message" => "product added"], 201);
+         }
     }
 
     /**
@@ -45,7 +70,12 @@ class ProductApiController extends Controller
      */
     public function show($id)
     {
-        //
+        if (Product::where('id', $id)->exists()){
+            $product = Product::find($id)->toJson(JSON_PRETTY_PRINT);
+            return response($product, 200);
+        } else {
+            return response()->json(["message" => "product not found"], 404);
+        }
     }
 
     /**
@@ -68,7 +98,29 @@ class ProductApiController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //update data product
+        if (Product::where('id', $id)->exists()) {
+            $validateData = Validator::make($request->all(), [
+                'name'          => 'required|min:4|max:250',
+                'brand'         => 'required|min:4|max:250',
+                'qty'           => 'required',
+                'price'         => 'required',
+                'description'   => 'required'
+            ]);
+            if ($validateData->fails()){
+                return response($validateData->errors(), 400);
+            } else {
+                $product = Product::find($id);
+                $product->name = $request->name;
+                $product->brand = $request->brand;
+                $product->qty = $request->qty;
+                $product->price = $request->price;
+                $product->description = $request->description;
+                $product->save();
+                return response()->json([
+                    "message" => "product updated"], 201);
+            } 
+        }
     }
 
     /**

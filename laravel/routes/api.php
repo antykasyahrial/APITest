@@ -22,6 +22,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/alluser', [UserApiController::class, 'index']);
-$router->post('/register', [UserApiController::class, 'store']);
-$router->get('/user/{id}', [UserApiController::class, 'show']);
-$router->put('/user/{id}', [UserApiController::class, 'update']);
+Route::post('/register', [UserApiController::class, 'store']);
+Route::get('/user/{id}', [UserApiController::class, 'show']);
+Route::put('/user/{id}', [UserApiController::class, 'update']);
+
+Route::get('/product', [ProductApiController::class, 'index']);
+Route::post('/product', [ProductApiController::class, 'store']);
+Route::get('/product/{id}', [ProductApiController::class, 'show']);
+Route::put('/product/{id}', [ProductApiController::class, 'update']);
+
