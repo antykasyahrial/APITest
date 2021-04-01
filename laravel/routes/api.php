@@ -18,11 +18,11 @@ use App\Http\Controllers\LoginController;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
-Route::get('/alluser', [UserApiController::class, 'index']);
+//Route::get('/alluser', [UserApiController::class, 'index']);
 Route::post('/register', [UserApiController::class, 'store']);
 Route::get('/user/{id}', [UserApiController::class, 'show']);
 Route::put('/user/{id}', [UserApiController::class, 'update']);
@@ -37,11 +37,18 @@ Route::post('/transaction', [TransactionApiController::class, 'store']);
 Route::get('/transaction/{id}', [TransactionApiController::class, 'show']);
 Route::put('/transaction/{id}', [TransactionController::class, 'update']);
 
-Route::post('/login', [LoginController::class, 'login']);
 
 Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'
 ], function ($router) {
-    Route::post('login', 'AuthController@login');
+    Route::post('/login', [LoginController::class, 'login'])->name('login');
+    Route::get('unauthorized',function(){
+        return response()->json([
+            "message" => "unauthorized"], 401);
+    })->name('unauthorized');
+    Route::group(['middleware' =>'auth:api'],function(){
+        Route::get('/alluser', [UserApiController::class, 'index']);
+    });
+
 });

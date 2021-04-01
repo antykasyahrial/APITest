@@ -8,6 +8,7 @@ use App\Models\User;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -16,6 +17,7 @@ class LoginController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    
     public function index()
     {
         //
