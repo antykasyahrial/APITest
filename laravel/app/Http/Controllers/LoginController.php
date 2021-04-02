@@ -96,6 +96,10 @@ class LoginController extends Controller
         }
         return $this->createNewToken($token);
     }
+    public function logout(){
+        JWTAuth::invalidate(JWTAuth::getToken());
+        return response()->json(['message' => 'Logout success'], 200);
+    }
 
     protected function createNewToken($token){
         return response()->json([

@@ -23,6 +23,7 @@ Route::group([
     'middleware' => 'api',
 ], function ($router) {
     Route::post('/login', [LoginController::class, 'login'])->name('login');
+    Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::post('/register', [LoginController::class,'register']);
     Route::post('/awas_ini_sangat_rahasia',[LoginController::class, 'register']);
 
