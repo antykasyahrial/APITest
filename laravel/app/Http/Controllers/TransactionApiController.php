@@ -120,29 +120,6 @@ class TransactionApiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //update data transaction
-        if (Transaction::where('id', $id)->exists()) {
-            $validateData = Validator::make($request->all(), [
-                'id_user'       => 'required',
-                'id_product'    => 'required',
-                'qty'           => 'required',
-                'totalPrice'    => 'required',
-            ]);
-            if ($validateData->fails()){
-                return response($validateData->errors(), 400);
-            } else {
-                $transaction = Transaction::find($id);
-                $transaction->name = $request->name == null ? $product->name : $request->name ;
-                $transaction->brand = $request->brand == null ? $product->brand : $request->brand ;
-                $transaction->qty = $request->qty == null ? $product->qty : $request->qty ;
-                $transaction->save();
-                return response()->json([
-                    "message" => "transaction updated"], 201);
-            } 
-        }
-    }
 
     /**
      * Remove the specified resource from storage.

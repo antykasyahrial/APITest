@@ -107,26 +107,26 @@ class UserApiController extends Controller
         //update data user
         if (User::where('id', $id)->exists()) {
             $validateData = Validator::make($request->all(), [
-                'firstName'     => 'required|min:4|max:250',
+                'firstName'     => 'nullable|min:4|max:250',
                 'lastName'      => '',
-                'username'      => 'required|min:4|max:250',
-                'phone'         => 'required',
-                'email'         => 'required|min:4|max:250',
-                'birthDate'     => 'required',
-                'sex'           => 'required|in:M,F',
-                'password'      => 'required|min:4|max:250'
+                'username'      => 'nullable|min:4|max:250',
+                'phone'         => 'numeric',
+                'email'         => 'nullable|min:4|max:250',
+                'birthDate'     => '',
+                'sex'           => 'nullable|in:M,F',
+                'password'      => 'nullable|min:4|max:250'
             ]);
             if ($validateData->fails()){
                 return response($validateData->errors(), 400);
             } else {
                 $user = User::find($id);
-                $user->firstName = $request->firstName == null ? $product->firstName : $request->firstName ;
-                $user->lastName = $request->lastName == null ? $product->lastName : $request->lastName ;
-                $user->username = $request->username == null ? $product->username : $request->username ;
-                $user->phone = $request->phone == null ? $product->phone : $request->phone ;
-                $user->email = $request->email == null ? $product->email : $request->email ;
-                $user->birthDate = $request->birthDate == null ? $product->birthDate : $request->birthDate ;
-                $user->sex = $request->sex == null ? $product->sex : $request->sex ;
+                $user->firstName = $request->firstName == null ? $user->firstName : $request->firstName ;
+                $user->lastName = $request->lastName == null ? $user->lastName : $request->lastName ;
+                $user->username = $request->username == null ? $user->username : $request->username ;
+                $user->phone = $request->phone == null ? $user->phone : $request->phone ;
+                $user->email = $request->email == null ? $user->email : $request->email ;
+                $user->birthDate = $request->birthDate == null ? $user->birthDate : $request->birthDate ;
+                $user->sex = $request->sex == null ? $user->sex : $request->sex ;
                 $user->password = Hash::make($request->password);
                 $user->save();
                 return response()->json([
