@@ -101,21 +101,21 @@ class ProductApiController extends Controller
         //update data product
         if (Product::where('id', $id)->exists()) {
             $validateData = Validator::make($request->all(), [
-                'name'          => 'required|min:4|max:250',
-                'brand'         => 'required|min:4|max:250',
-                'qty'           => 'required',
-                'price'         => 'required',
-                'description'   => 'required'
+                'name'          => 'nullable|min:4|max:250',
+                'brand'         => 'nullable|min:4|max:250',
+                'qty'           => 'numeric',
+                'price'         => 'numeric',
+                'description'   => 'text'
             ]);
             if ($validateData->fails()){
                 return response($validateData->errors(), 400);
             } else {
                 $product = Product::find($id);
-                $product->name = $request->name;
-                $product->brand = $request->brand;
-                $product->qty = $request->qty;
-                $product->price = $request->price;
-                $product->description = $request->description;
+                $product->name =  $request->name == null ? $product->name : $request->name ;
+                $product->brand = $request->brand == null ? $product->brand : $request->brand ;
+                $product->qty = $request->qty == null ? $product->qty : $request->qty ;
+                $product->price = $request->price == null ? $product->price : $request->price ;
+                $product->description = $request->description == null ? $product->description : $request->description ;
                 $product->save();
                 return response()->json([
                     "message" => "product updated"], 201);
