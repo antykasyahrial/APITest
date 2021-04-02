@@ -30,7 +30,8 @@ Route::group([
     'middleware' => 'api',
 ], function ($router) {
     Route::post('/login', [LoginController::class, 'login'])->name('login');
-    Route::post('/register', [UserApiController::class, 'store']);
+    Route::post('/register', [LoginController::class,'register']);
+    Route::post('/awas_ini_sangat_rahasia',[LoginController::class, 'register']);
 
     Route::get('unauthorized',function(){
         return response()->json([
@@ -47,23 +48,21 @@ Route::group([
 
         
         //user
-        Route::group(['prefix' => 'user'],function(){
-            // Route::get('/transaction', [TransactionApiController::class, 'index']);
-            Route::put('/profile', [UserApiController::class, 'updateProfile']);
-            Route::get('/profile', [UserApiController::class, 'profile']);
-        });
-       
+        // Route::get('/transaction', [TransactionApiController::class, 'index']);
+        // /Route::put('/profile', [UserApiController::class, 'updateProfile']);
+        Route::get('/profile', [UserApiController::class, 'profile']);
+    
         //admin
-        Route::group(['middleware' => 'admin','prefix' => 'admin'],function(){
-
+        Route::group(['middleware' => 'role','prefix' => 'admin'],function(){
+            Route::get('/alluser', [UserApiController::class, 'index']);
+            Route::get('/user/{id}', [UserApiController::class, 'show']);
+            Route::put('/user/{id}', [UserApiController::class, 'update']);
+            //Route::post('/product', [ProductApiController::class, 'store']);
+            //Route::put('/product/{id}', [ProductApiController::class, 'update']);
+            //Route::get('/transaction', [TransactionApiController::class, 'index']);
+            // Route::get('/transaction/{id}', [TransactionApiController::class, 'show']);
         });
-        Route::get('/alluser', [UserApiController::class, 'index']);
-        Route::get('/user/{id}', [UserApiController::class, 'show']);
-        Route::put('/user/{id}', [UserApiController::class, 'update']);
-        //Route::post('/product', [ProductApiController::class, 'store']);
-        //Route::put('/product/{id}', [ProductApiController::class, 'update']);
-        //Route::get('/transaction', [TransactionApiController::class, 'index']);
-        // Route::get('/transaction/{id}', [TransactionApiController::class, 'show']);
+        
         
 
 

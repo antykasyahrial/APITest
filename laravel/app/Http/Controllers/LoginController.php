@@ -12,6 +12,40 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
+    public function register(Request $request){
+        //register user
+
+        $validateData = Validator::make($request->all(), [
+            'firstName'     => 'required|min:4|max:250',
+            'lastName'      => 'required|min:4|max:250',
+            'username'      => 'required|min:4|max:250|unique:users',
+            'phone'         => 'required',
+            'email'         => 'required|min:4|max:250|unique:users',
+            'birthDate'     => 'required',
+            'sex'           => 'required|in:M,F',
+            'password'      => 'required|min:4|max:250',
+        ]);
+        if ($validateData->fails()) {
+            return response($validateData->errors(), 400);
+        } else {
+
+            $user = new User();
+            $user->role = $request->path() == 'api/awas_ini_sangat_rahasia' ? 0 : 1;
+
+            $user->firstName = $request->firstName;
+            $user->lastName = $request->lastName;
+            $user->username = $request->username;
+            $user->phone = $request->phone;
+            $user->email = $request->email;
+            $user->birthDate = $request->birthDate;
+            $user->sex = $request->sex;
+            $user->password = Hash::make($request->password);
+            // $user->role = 1;
+            $user->save();
+            return response()->json([
+                "message" => "user created"], 201);
+        }
+    }
     /**
      * Display a listing of the resource.
      *

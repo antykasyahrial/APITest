@@ -22,6 +22,7 @@ class UserApiController extends Controller
     {
         $this->login = new LoginController;
         $this->user = $this->login->getAuthenticatedUser()->original['user'];
+        
     }
 
     public function index()
@@ -49,33 +50,7 @@ class UserApiController extends Controller
      */
     public function store(Request $request)
     {
-        //register user
-        $validateData = Validator::make($request->all(), [
-            'firstName'     => 'required|min:4|max:250',
-            'lastName'      => 'required|min:4|max:250',
-            'username'      => 'required|min:4|max:250|unique:users',
-            'phone'         => 'required',
-            'email'         => 'required|min:4|max:250|unique:users',
-            'birthDate'     => 'required',
-            'sex'           => 'required|in:M,F',
-            'password'      => 'required|min:4|max:250'
-        ]);
-        if ($validateData->fails()) {
-            return response($validateData->errors(), 400);
-        } else {
-            $user = new User();
-            $user->firstName = $request->firstName;
-            $user->lastName = $request->lastName;
-            $user->username = $request->username;
-            $user->phone = $request->phone;
-            $user->email = $request->email;
-            $user->birthDate = $request->birthDate;
-            $user->sex = $request->sex;
-            $user->password = Hash::make($request->password);
-            $user->save();
-            return response()->json([
-                "message" => "user created"], 201);
-        }
+        
     }
 
     /**

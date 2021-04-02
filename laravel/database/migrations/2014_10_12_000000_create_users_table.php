@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->date('birthDate');
             $table->string('sex');
             $table->string('password');
+            $table->boolean('role');
             $table->timestamps();
         });
     }
