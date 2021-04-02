@@ -33,14 +33,11 @@ Route::get('/product/{id}', [ProductApiController::class, 'show']);
 Route::put('/product/{id}', [ProductApiController::class, 'update']);
 
 Route::get('/transaction', [TransactionApiController::class, 'index']);
-Route::post('/transaction', [TransactionApiController::class, 'store']);
 Route::get('/transaction/{id}', [TransactionApiController::class, 'show']);
-Route::put('/transaction/{id}', [TransactionController::class, 'update']);
-
+Route::put('/transaction/{id}', [TransactionApiController::class, 'update']);
 
 Route::group([
     'middleware' => 'api',
-    'prefix' => 'auth'
 ], function ($router) {
     Route::post('/login', [LoginController::class, 'login'])->name('login');
     Route::get('unauthorized',function(){
@@ -48,7 +45,9 @@ Route::group([
             "message" => "unauthorized"], 401);
     })->name('unauthorized');
     Route::group(['middleware' =>'auth:api'],function(){
+        Route::get('/authenticate', [LoginCOntroller::class, 'getAuthenticatedUser'])->name('getAuthenticated');
         Route::get('/alluser', [UserApiController::class, 'index']);
+        Route::post('/transaction', [TransactionApiController::class, 'store']);
     });
 
 });

@@ -43,9 +43,9 @@ class UserApiController extends Controller
         $validateData = Validator::make($request->all(), [
             'firstName'     => 'required|min:4|max:250',
             'lastName'      => 'required|min:4|max:250',
-            'username'      => 'required|min:4|max:250',
+            'username'      => 'required|min:4|max:250|unique:users',
             'phone'         => 'required',
-            'email'         => 'required|min:4|max:250',
+            'email'         => 'required|min:4|max:250|unique:users',
             'birthDate'     => 'required',
             'sex'           => 'required|in:M,F',
             'password'      => 'required|min:4|max:250'
