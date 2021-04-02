@@ -47,19 +47,20 @@ Route::group([
     
         //admin
         Route::group(['middleware' => 'role','prefix' => 'admin'],function(){
-        Route::get('/alluser', [UserApiController::class, 'index']);
-        Route::get('/user/{id}', [UserApiController::class, 'show']);
-        Route::put('/user/{id}', [UserApiController::class, 'update']);
-        Route::get('/transaction', [TransactionApiController::class, 'index']);
-        Route::post('/product', [ProductApiController::class, 'store']);
-        Route::put('/product/{id}', [ProductApiController::class, 'update']);
-        Route::get('/transaction', [TransactionApiController::class, 'index']);
-        Route::get('/transaction/{id}', [TransactionApiController::class, 'show']);
+            Route::get('/alluser', [UserApiController::class, 'index']);
+            Route::get('/user/{id}', [UserApiController::class, 'show']);
+            Route::put('/user/{id}', [UserApiController::class, 'update']);
+            Route::get('/transaction', [TransactionApiController::class, 'index']);
+            Route::post('/product', [ProductApiController::class, 'store']);
+            Route::put('/product/{id}', [ProductApiController::class, 'update']);
+            Route::get('/transaction', [TransactionApiController::class, 'index']);
+            Route::get('/transaction/{id}', [TransactionApiController::class, 'show']);
         });
         
         
-
-
+        
+//https://awalmula.hitrashindonesia.id
     });
 
 });
+
