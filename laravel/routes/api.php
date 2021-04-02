@@ -38,6 +38,7 @@ Route::group([
         Route::get('/product', [ProductApiController::class, 'index']);
         Route::get('/product/{id}', [ProductApiController::class, 'show']);
         Route::post('/transaction', [TransactionApiController::class, 'store']);
+        Route::get('/history', [TransactionApiController::class, 'idShow']);
         
         //user
         Route::put('/profile', [UserApiController::class, 'updateProfile']);

@@ -51,6 +51,13 @@ class TransactionApiController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+    public function idShow(){
+        $transaction = DB::table('transactions')->select('*')
+                    ->where('id_user', '=', $this->user->id)->get();
+        return response($transaction, 200);
+    }
+
     public function store(Request $request)
     {
         //add transactions
