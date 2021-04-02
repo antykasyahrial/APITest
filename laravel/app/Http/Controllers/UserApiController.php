@@ -7,6 +7,7 @@ Use File;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use App\Http\Controllers\LoginController;
 class UserApiController extends Controller
 {
     /**
@@ -14,6 +15,15 @@ class UserApiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    private $login;
+    private $user;
+    public function __construct()
+    {
+        $this->login = new LoginController;
+        $this->user = $this->login->getAuthenticatedUser()->original['user'];
+    }
+
     public function index()
     {
         //see all users
@@ -84,6 +94,41 @@ class UserApiController extends Controller
         }
     }
 
+    public function profile()
+    {   
+        return response($this->user->toJson(JSON_PRETTY_PRINT), 200);
+    }
+
+    public function updateProfile(Request $request)
+    {   
+        $user = User::find($this->user->id);
+        $validateData = Validator::make($request->all(), [
+            'firstName'     => 'nullable|min:4|max:250',
+            'lastName'      => '',
+            'username'      => 'nullable|min:4|max:250',
+            'phone'         => 'numeric',
+            'email'         => 'nullable|min:4|max:250',
+            'birthDate'     => '',
+            'sex'           => 'nullable|in:M,F',
+            'password'      => 'nullable|min:4|max:250'
+        ]);
+        if ($validateData->fails()){
+            return response($validateData->errors(), 400);
+        } else {
+            $user->firstName = $request->firstName == null ? $user->firstName : $request->firstName ;
+            $user->lastName = $request->lastName == null ? $user->lastName : $request->lastName ;
+            $user->username = $request->username == null ? $user->username : $request->username ;
+            $user->phone = $request->phone == null ? $user->phone : $request->phone ;
+            $user->email = $request->email == null ? $user->email : $request->email ;
+            $user->birthDate = $request->birthDate == null ? $user->birthDate : $request->birthDate ;
+            $user->sex = $request->sex == null ? $user->sex : $request->sex ;
+            $user->password = $request->password == null ? $user->password :  Hash::make($request->password);
+            $user->save();
+            return response()->json([
+                "message" => "user updated"], 201);
+            }
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -127,7 +172,7 @@ class UserApiController extends Controller
                 $user->email = $request->email == null ? $user->email : $request->email ;
                 $user->birthDate = $request->birthDate == null ? $user->birthDate : $request->birthDate ;
                 $user->sex = $request->sex == null ? $user->sex : $request->sex ;
-                $user->password = Hash::make($request->password);
+                $user->password = $request->password == null ? $user->password :  Hash::make($request->password);
                 $user->save();
                 return response()->json([
                     "message" => "user updated"], 201);

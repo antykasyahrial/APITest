@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Validator;
 Use File;
 use App\Models\Product;
+use App\Http\Controllers\LoginController;
 use Illuminate\Http\Request;
 
 class ProductApiController extends Controller
@@ -14,6 +15,15 @@ class ProductApiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    
+    private $login;
+    private $user;
+    public function __construct()
+    {
+        $this->login = new LoginController;
+        $this->user = $this->login->getAuthenticatedUser()->original['user'];
+    }
+    
     public function index()
     {
         //see all products

@@ -47,11 +47,12 @@ Route::group([
 
         
         //user
-        Route::group(['middleware' => 'user','prefix' => 'user'],function(){
-
+        Route::group(['prefix' => 'user'],function(){
+            // Route::get('/transaction', [TransactionApiController::class, 'index']);
+            Route::put('/profile', [UserApiController::class, 'updateProfile']);
+            Route::get('/profile', [UserApiController::class, 'profile']);
         });
-        // Route::get('/transaction', [TransactionApiController::class, 'index']);
-
+       
         //admin
         Route::group(['middleware' => 'admin','prefix' => 'admin'],function(){
 
