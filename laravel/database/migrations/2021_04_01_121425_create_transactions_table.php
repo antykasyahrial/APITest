@@ -21,8 +21,8 @@ class CreateTransactionsTable extends Migration
             $table->integer('qty');
             $table->integer('totalPrice');
             $table->timestamps();
-            $table->foreign('id_user')->references('id')->on('users');
-            $table->foreign('id_product')->references('id')->on('products');
+            $table->foreign('id_user')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('id_product')->references('id')->on('products')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

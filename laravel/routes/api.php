@@ -53,13 +53,10 @@ Route::group([
             Route::get('/transaction', [TransactionApiController::class, 'index']);
             Route::post('/product', [ProductApiController::class, 'store']);
             Route::put('/product/{id}', [ProductApiController::class, 'update']);
+            Route::delete('/product/{id}', [ProductApiController::class, 'destroy']);
             Route::get('/transaction', [TransactionApiController::class, 'index']);
             Route::get('/transaction/{id}', [TransactionApiController::class, 'show']);
         });
-        
-        
-        
-//https://awalmula.hitrashindonesia.id
     });
 
 });

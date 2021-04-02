@@ -130,6 +130,8 @@ class ProductApiController extends Controller
                 return response()->json([
                     "message" => "product updated"], 201);
             } 
+        } else {
+
         }
     }
 
@@ -141,6 +143,14 @@ class ProductApiController extends Controller
      */
     public function destroy($id)
     {
-        //
+        //update data product
+        $product = Product::find($id);
+        if (!$product) {
+            return response()->json([
+                "message" => "product not found"], 404);
+        }
+        $product->delete();    
+        return response()->json([
+            "message" => "product deleted"], 201);
     }
 }
