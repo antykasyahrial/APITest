@@ -120,13 +120,13 @@ class UserApiController extends Controller
                 return response($validateData->errors(), 400);
             } else {
                 $user = User::find($id);
-                $user->firstName = $request->firstName;
-                $user->lastName = $request->lastName;
-                $user->username = $request->username;
-                $user->phone = $request->phone;
-                $user->email = $request->email;
-                $user->birthDate = $request->birthDate;
-                $user->sex = $request->sex;
+                $user->firstName = $request->firstName == null ? $product->firstName : $request->firstName ;
+                $user->lastName = $request->lastName == null ? $product->lastName : $request->lastName ;
+                $user->username = $request->username == null ? $product->username : $request->username ;
+                $user->phone = $request->phone == null ? $product->phone : $request->phone ;
+                $user->email = $request->email == null ? $product->email : $request->email ;
+                $user->birthDate = $request->birthDate == null ? $product->birthDate : $request->birthDate ;
+                $user->sex = $request->sex == null ? $product->sex : $request->sex ;
                 $user->password = Hash::make($request->password);
                 $user->save();
                 return response()->json([

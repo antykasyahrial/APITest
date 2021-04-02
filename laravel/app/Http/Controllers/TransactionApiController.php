@@ -134,9 +134,9 @@ class TransactionApiController extends Controller
                 return response($validateData->errors(), 400);
             } else {
                 $transaction = Transaction::find($id);
-                $transaction->name = $request->name;
-                $transaction->brand = $request->brand;
-                $transaction->qty = $request->qty;
+                $transaction->name = $request->name == null ? $product->name : $request->name ;
+                $transaction->brand = $request->brand == null ? $product->brand : $request->brand ;
+                $transaction->qty = $request->qty == null ? $product->qty : $request->qty ;
                 $transaction->save();
                 return response()->json([
                     "message" => "transaction updated"], 201);
