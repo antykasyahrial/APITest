@@ -33,7 +33,7 @@ Route::group([
     })->name('unauthorized');
 
     Route::group(['middleware' =>'auth:api'],function(){
-        Route::get('/authenticate', [LoginCOntroller::class, 'getAuthenticatedUser'])->name('getAuthenticated');
+        Route::get('/authenticate', [LoginController::class, 'getAuthenticatedUser'])->name('getAuthenticated');
         
         //all
         Route::get('/product', [ProductApiController::class, 'index']);
@@ -57,6 +57,7 @@ Route::group([
             Route::delete('/product/{id}', [ProductApiController::class, 'destroy']);
             Route::get('/transaction', [TransactionApiController::class, 'index']);
             Route::get('/transaction/{id}', [TransactionApiController::class, 'show']);
+            Route::get('/getProfit', [TransactionApiController::class, 'getprofit']);
         });
     });
 
